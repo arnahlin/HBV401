@@ -1,9 +1,9 @@
 
-// H�fundur: Þurí
+// Höfundur: Þurí
 //
 // Notkun: java -cp .;sqlite-jdbc-....jar Guest
 // Fyrir:  SQLite skrain HotelDB.db inniheldur Hotel gagnagrunninn.
-// Eftir:  B�i� er a� gefa �llum starfsm�nnum 10% dala launah�kkun.
+// Eftir:  
 
 import java.sql.*;
 
