@@ -1,7 +1,8 @@
 
 // Höfundur: Þurí
 //
-// Notkun: java -cp .;sqlite-jdbc-....jar Guest
+// Notkun: javac Guest.java
+			// java -cp .:sqlite-jdbc-3.18.0.jar Guest
 // Fyrir:  SQLite skrain HotelDB.db inniheldur Hotel gagnagrunninn.
 // Eftir:  
 
@@ -19,7 +20,7 @@ public class Guest
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:HotelDB.db");
 			stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO Guest VALUES('Gunnar Atlason','2207896679')");
+			stmt.executeUpdate("INSERT INTO Guest VALUES('Guðrún Guðmundsdóttir','1047896679')");
 		}
 		catch( Exception e )
 		{
@@ -27,7 +28,6 @@ public class Guest
 		}
 		finally
 		{
-			//if( stmt!=null ) stmt.close();
 			if( conn!=null ) conn.close();
 		}
 	}
