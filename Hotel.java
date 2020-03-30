@@ -17,4 +17,8 @@ public class Hotel {
     public void removeRoom(int roomID) {
 
     }
+
+    public List searchByLocation(String location) {
+        
+    }
 }

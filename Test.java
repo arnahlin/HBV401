@@ -9,10 +9,10 @@ public class Test {
     public void setUp() throws Exception {
         // Code executed before each test
         Hotel locationTest = new Hotel("test", "Norðurland"); 
-        Room roomTest = new Room(99, 123, False, medium); // don't know if the enum is right
-        Hotel nameTest = new Hotel("Fosshótel", "test");
     }
 
+    // Should return a list of hotels in North Iceland, if any hotel is 
+    // not in north Iceland then it fails.
     @Test
     public void testHotelSearch() {
         // Get the output from the search method.
@@ -25,26 +25,18 @@ public class Test {
         }
     }
 
+    // Should not return results, and if it does then it's a fail
     @Test
     public void testRoomSearch() {
-        // Tests if searching for a room by price works
-        List roomList = RoomController.searchByPrice("less", 20000);
-
-        for(int i = 0; i < hotelList.length; i++) {
-            if(roomList[i].price < 20000) {
-                return True; // not sure if we are supposed to return true?? 
-            } else {return False;}
-        }
+        List hotelList = HotelController.searchByLocation(""); 
+        assertEquals(0, hotelList.length); // if this returns false, then we got some results back and the test is a fail
     }
 
+    // Invalid parameters
     @Test
-    public void testHotelNameSearch() {    
-        // Tests if searching for a hotel by name works   
-        assertEquals(nameTest.hotelName, HotelController.searchByName("Fosshótel"));
+    public void testHotelNameSearch() throws IllegalArgumentException {  
+        List hotelList = HotelController.searchByLocation(123); 
     }
-
-
-    // Maybe add one more test here? Ideas?
 
     @After
     public void tearDown() throws Exception {
@@ -53,5 +45,4 @@ public class Test {
         roomTest = null;
         nameTest = null;
     }
-
 }
