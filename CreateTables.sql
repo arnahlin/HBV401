@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS Guest( 
 name VARCHAR(100),
-kennitala VARCHAR(12) PRIMARY KEY,sqlit
+kennitala VARCHAR(12) PRIMARY KEY,
 reservationID INT
 );
 
