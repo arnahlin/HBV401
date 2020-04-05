@@ -41,3 +41,9 @@ FOREIGN KEY(roomID) REFERENCES Room(roomID)
 .headers on
 .tables
 
+SELECT * FROM Guest;
+SELECT * FROM Hotel;
+SELECT * FROM Room;
+SELECT * FROM Reservation;
+SELECT * FROM Occupancy;
+
