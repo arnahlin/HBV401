@@ -13,12 +13,12 @@ rooms INT
 
 CREATE TABLE IF NOT EXISTS Room( 
 roomID INT,
-hotelNr INT REFERENCES Hotel(hotelID), 
+hotelID INT, 
 price INT, 
 booked char(1),
 available char(1),
-PRIMARY KEY(roomID, hotelNr),
-FOREIGN KEY(hotelNr) REFERENCES HOTEL(hotelID)
+PRIMARY KEY(roomID, hotelID),
+FOREIGN KEY(hotelID) REFERENCES HOTEL(hotelID)
 );
 
 CREATE TABLE IF NOT EXISTS Reservation( 
@@ -32,7 +32,9 @@ FOREIGN KEY(roomID) REFERENCES Room(roomID)
 
 CREATE TABLE IF NOT EXISTS Occupancy( 
 checkIn DATE,
-checkOut DATE
+checkOut DATE,
+roomID INT,
+FOREIGN KEY(roomID) REFERENCES Room(roomID)
 );
 
 .mode column
