@@ -24,16 +24,10 @@ FOREIGN KEY(hotelID) REFERENCES HOTEL(hotelID)
 CREATE TABLE IF NOT EXISTS Reservation( 
 reservationID INT,
 guestName VARCHAR(100) REFERENCES Guest(name),
-occupancy DATE,
-roomID INT,
-PRIMARY KEY(reservationID),
-FOREIGN KEY(roomID) REFERENCES Room(roomID)
-);
-
-CREATE TABLE IF NOT EXISTS Occupancy( 
 checkIn DATE,
 checkOut DATE,
 roomID INT,
+PRIMARY KEY(reservationID),
 FOREIGN KEY(roomID) REFERENCES Room(roomID)
 );
 
@@ -45,5 +39,4 @@ SELECT * FROM Guest;
 SELECT * FROM Hotel;
 SELECT * FROM Room;
 SELECT * FROM Reservation;
-SELECT * FROM Occupancy;
 
