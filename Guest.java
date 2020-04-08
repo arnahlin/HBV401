@@ -1,34 +1,37 @@
 
-// Höfundur: Þurí
-//
-// Notkun: javac Guest.java
-			// java -cp .:sqlite-jdbc-3.18.0.jar Guest
-// Fyrir:  SQLite skrain HotelDB.db inniheldur Hotel gagnagrunninn.
-// Eftir:  
+/**
+ * Hotel booking Guest.
+ * 
+ */
+public class Guest {
+	private int kennitala;
+	private String name;
+	private int reservationID;
 
-import java.sql.*;
-
-public class Guest
-{
-	public static void main( String[] args )
-		throws Exception
-	{
-		Connection conn = null;
-		Statement stmt = null;
-		try
-		{
-			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:HotelDB.db");
-			stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO Guest VALUES('Guðrún Guðmundsdóttir','1047896679')");
-		}
-		catch( Exception e )
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			if( conn!=null ) conn.close();
-		}
+	public Guest(final int kennitala, final String name, int reservationID) {
+        this.kennitala = kennitala;
+        this.name = name;
+        this.reservationID = reservationID;
 	}
+	
+	public int getKennitala(){
+		return kennitala;
+	}
+
+	public void setId(int kennitala){
+		this.kennitala = kennitala;
+	}
+
+	public void setName(String name) {
+        this.name = name;
+	}
+	
+	public void getName() {
+        return name;
+    }
+	
+
+
+
+
 }
