@@ -1,11 +1,11 @@
-// javac reservationController.java
+// javac ReservationController.java
 // java -cp .:sqlite-jdbc-3.18.0.jar ReservationController
 // SQLite skrain HotelDB.db inniheldur Hotel gagnagrunninn.
+// .read CreateTables.sql til að sjá hvort breytingin hafi komist inn.
 
 import java.sql.*;
 
 public class ReservationController {
-
 
 	// Marks the room as booked
 	public void bookRoom(int roomId) {
@@ -14,16 +14,26 @@ public class ReservationController {
 
 	public static void main(String[] args) throws Exception {
 		Connection conn = null; //
-		Statement stmt = null; // Statement: The object used for executing a static SQL statement and returning
-								// the results it produces.
+		PreparedStatement pstmt = null;
+		//ResultSet r = null;
 
 		try {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:HotelDB.db");
-			stmt = conn.createStatement();
-			// stmt.executeUpdate("INSERT INTO Guest VALUES('Jón Gunnarsson','2309841329','38'),('Sigurður Jónasson','0109725469','43')");
-			// stmt.executeUpdate("INSERT INTO Reservation VALUES('12','Sigurður Jónasson','2020-06-20','057');");
-			// stmt.executeUpdate("INSERT INTO Occupancy VALUES('2020-06-30','2020-07-04','022');");
+			String avail = "SELECT roomID, hotelID FROM Room WHERE roomID=789 AND hotelID=18";
+			pstmt = conn.prepareStatement(avail);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (!rs.next() ) {    
+				System.out.println("This room is occupied");
+			   }
+			   else{
+				//setting room in room table to be occupied
+				String setBooked = "UPDATE Room set available='n' WHERE roomID=789 AND hotelID=18";
+				PreparedStatement pstmt2 = conn.prepareStatement(setBooked);
+				pstmt2.executeUpdate();
+
+			}    
 
 
 		} catch (Exception e) {

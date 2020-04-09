@@ -26,7 +26,7 @@ public class Guest {
         this.name = name;
 	}
 	
-	public void getName() {
+	public string getName() {
         return name;
     }
 	
