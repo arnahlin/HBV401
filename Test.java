@@ -42,7 +42,5 @@ public class Test {
     public void tearDown() throws Exception {
         // Code executed after each test
         locationTest = null;
-        roomTest = null;
-        nameTest = null;
     }
 }
