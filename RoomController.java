@@ -14,9 +14,13 @@ public class RoomController {
      * the search criteria.
      * @return Room object
      */
-    // public Room search() {
-        
-    // }
+    public Room search(String type) {
+		ArrayList<Room> temp = new ArrayList<Room>();
+		
+		//todo
+
+		return temp;
+    }
 
     /**
      * Marks the room as booked 
