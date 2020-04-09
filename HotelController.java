@@ -5,21 +5,42 @@
 
 import java.sql.*;
 import java.util.List;
+import java.util.ArrayList;
+
 
 public class HotelController {
-    private List hotels;
+    private List<Hotel> hotels;
 
+    public void addHotel(int ID, String name, String location) {
+        String sql = "INSERT INTO Hotel VALUES(" + ID + name + location + ");";
 
-    public void search() {
-
+        // more code comes here
     }
 
-    public void addHotel() {
+    public void removeHotel(int ID) {
+        String sql = "DELETE FROM Hotel WHERE hotelID = " + ID + ";";
 
+        // more code comes here
+    }
+    
+    public ArrayList<Hotel> searchByLocation(String location) {
+        ArrayList<Hotel> temp = new ArrayList<Hotel>();
+
+        String sql = "SELECT * FROM Hotels WHERE location = " + location +";"; 
+
+        // more code comes here
+        
+        return temp; 
     }
 
-    public void removeHotel() {
+    public ArrayList<Hotel> searchByName(String name) {
+        ArrayList<Hotel> temp = new ArrayList<Hotel>();
 
+        String sql = "SELECT * FROM Hotels WHERE name = " + name +";"; 
+
+        // more code comes here
+
+        return temp; 
     }
 
     public static void main( String[] args ) throws Exception {

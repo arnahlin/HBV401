@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.List;
 
 public class RoomController {
-    private List rooms; // ætti að vera tengt við Room eh veginn
+    private List<Room> rooms; // ætti að vera tengt við Room eh veginn
     
 
     /**
