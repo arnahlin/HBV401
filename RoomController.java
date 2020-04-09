@@ -22,7 +22,7 @@ public class RoomController {
      * Marks the room as booked 
      */
     public void bookRoom(int roomId) {
-
+		String s = "UPDATE Room SET available = " + "n " + "WHERE roomID = " + roomID + ";";
     }
 
     public static void main( String[] args ) throws Exception {
