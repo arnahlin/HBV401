@@ -26,7 +26,7 @@ public class HotelController {
     public ArrayList<Hotel> searchByLocation(String location) {
         ArrayList<Hotel> temp = new ArrayList<Hotel>();
 
-        sql = "SELECT * FROM Hotels WHERE location = " + location +";"; 
+        String sql = "SELECT * FROM Hotels WHERE location = " + location +";"; 
 
         // more code comes here
         
@@ -36,7 +36,7 @@ public class HotelController {
     public ArrayList<Hotel> searchByName(String name) {
         ArrayList<Hotel> temp = new ArrayList<Hotel>();
 
-        sql = "SELECT * FROM Hotels WHERE name = " + name +";"; 
+        String sql = "SELECT * FROM Hotels WHERE name = " + name +";"; 
 
         // more code comes here
 

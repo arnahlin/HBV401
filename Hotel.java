@@ -27,19 +27,19 @@ public class Hotel {
         return location;
     }
 
-    public void setHotelID(int id) {
-        this.id = hotelID;
+    public void setHotelID(int hotelID) {
+        this.hotelID = hotelID;
     } 
 
-    public void setHotelName(String name) {
-        this.name = hotelName;
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
     }
 
-    public void setLocation(String loc) {
-        this.loc = location;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public void addRoom(int roomID, int type, int price) { // enum type
+    public void addRoom(int roomID, int hotelID, int price, char available) {
         String sql = "INSERT INTO Room VALUES(" + roomID + hotelID + price + available + ");";
     }
   
