@@ -28,8 +28,7 @@ public class ReservationController {
 				System.out.println("This room is occupied");
 			   }
 			   else{
-				//setting room in room table to be occupied
-				String setBooked = "UPDATE Room set available='n' WHERE roomID=789 AND hotelID=18";
+				String setBooked = "UPDATE Room set available='n' WHERE roomID=789 AND hotelID=18"; //setting room in room table to be occupied
 				PreparedStatement pstmt2 = conn.prepareStatement(setBooked);
 				pstmt2.executeUpdate();
 
