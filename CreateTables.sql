@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS Room(
 roomID INT,
 hotelID INT, 
 price INT, 
-booked char(1),
 available char(1),
 PRIMARY KEY(roomID, hotelID),
 FOREIGN KEY(hotelID) REFERENCES HOTEL(hotelID)
