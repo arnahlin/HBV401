@@ -4,11 +4,10 @@
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class RoomController {
-
-	private Room room = new Room();
 
     private Connection dataBase() {
         Connection conn = null;
@@ -22,29 +21,37 @@ public class RoomController {
         return conn;
 	}
 
-    public ArrayList<Room> search(String type) {
+    public ArrayList<Room> search() throws SQLException {
+		Connection conn = dataBase();
+		Statement stmt = conn.createStatement();
 		ArrayList<Room> temp = new ArrayList<Room>();
-		
-		//todo
-
+		ResultSet srs = stmt.executeQuery("SELECT * FROM Room");
+		while (srs.next()) {
+			Room room = new Room();
+			room.setRoomID(srs.getInt("roomID"));
+			room.setHotelID(srs.getInt("hotelID"));
+			room.setPrice(srs.getInt("price"));
+			room.setAvailable(srs.getString("available"));
+			temp.add(room);
+		}
 		return temp;
     }
 
-    /**
-	 * Marks the room as booked
-	 * 
-	 * @throws SQLException
-	 */
-	public void bookRoom(int roomID) throws SQLException {
-		Connection conn = dataBase();
-		Statement stmt = conn.createStatement();
-		String s = "UPDATE Room SET available = " + "n " + "WHERE roomID = " + roomID + ";";
-		ResultSet rs = stmt.executeQuery(s);
-	}
+//  sé að þetta er nú þegar í reservation controller...
+//	public void bookRoom(int roomID) throws SQLException {
+//		Connection conn = dataBase();
+//		Statement stmt = conn.createStatement();
+//		String s = "UPDATE Room SET available = " + "n " + "WHERE roomID = " + roomID + ";";
+//		PreparedStatement pstmt = conn.prepareStatement(s);
+//		pstmt.executeUpdate();
+//	}
 	
 
     public static void main( String[] args ) throws Exception {
+		Scanner s = new Scanner(System.in);
+		RoomController test = new RoomController();
+		
+		System.out.println(Arrays.toString(test.search().toArray()));
 
 	}
-
 }
