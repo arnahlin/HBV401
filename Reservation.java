@@ -3,20 +3,19 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Reservation {
-        private List rooms; // List of rooms that the reservation contains
+        public List rooms; // List of rooms that the reservation contains
         // private Room room; // ??
 
-        private int ReservationID;
-        private Hotel hotel;
-        private Guest guest;
-        private Date checkinDate;
-        private Date checkoutDate;
+        public int ReservationID;
+     //   private Hotel hotel;
+        public String guest;
+        public Date checkinDate;
+        public Date checkoutDate;
 
         // smiður
-        public Reservation(Hotel hotel, Guest guest, int daysFromNow, int nights) {
-                this.hotel = hotel;
+        public Reservation(String guest, int daysFromNow, int nights) {
+           //     this.hotel = hotel;
                 this.guest = guest;
-                this.beds = 1;
         setReservationDates(daysFromNow, nights);
         }
 
@@ -26,7 +25,7 @@ public class Reservation {
         }
 
         public void setID(int id) {
-                this.id = ReservationID;
+                this.ReservationID = id;
         }
 
         public Date getCheckinDate() {
@@ -36,7 +35,7 @@ public class Reservation {
         public void setCheckinDate(Date checkIn) {
                 this.checkinDate = checkIn;
         }
-
+        /*
         public Hotel getHotel() {
                 return hotel;
         }
@@ -44,8 +43,9 @@ public class Reservation {
         public void setHotel(Hotel hotel) {
                 this.hotel = hotel;
         }
-
-        public final void setReservationDates(int daysFromNow, int nights) { // Format YY MM DD
+        */
+        // ath! þarf að laga format á dagsetningu.
+        public final void setReservationDates(int daysFromNow, int nights) {
                 Calendar rightNow = Calendar.getInstance(); // getInstance method returns a Calendar object whose calendar fields have been initialized with the current date and time:
 
                 rightNow.set(rightNow.get(Calendar.YEAR), rightNow.get(Calendar.MONTH), rightNow.get(Calendar.DAY_OF_MONTH) + daysFromNow, 0, 0, 0);
