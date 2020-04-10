@@ -11,10 +11,37 @@ import java.util.ArrayList;
 public class HotelController {
     private List<Hotel> hotels;
 
-    public void addHotel(int ID, String name, String location) {
+
+    private Connection connectToDatab() {
+        Connection conn = null;
+		// Statement stmt = null;  
+		try {
+			Class.forName("org.sqlite.JDBC");
+			conn = DriverManager.getConnection("jdbc:sqlite:HotelDB.db");
+			//stmt = conn.createStatement();
+		 //	stmt.executeUpdate("INSERT INTO Hotel VALUES('38','Hotel Sudurnes','South','134')");
+		
+        /* Ath, ég commentaði línuna hér að ofan út, því Hótel Suðurnes er komið inn núna
+        ef á að keyra aftur þarf að setja inn ný gildi því annars kemur villa út af primary key :) */
+
+        System.out.println("Connection successful");
+
+		}
+		catch( Exception e ) {
+			e.printStackTrace();
+        }
+        return conn;
+	}
+
+    public void addHotel(int ID, String name, String location) throws Exception {
+        Connection conn = connectToDatab();
+        Statement stmt = conn.createStatement();
+
         String sql = "INSERT INTO Hotel VALUES(" + ID + name + location + ");";
 
-        // more code comes here
+        ResultSet rs =  stmt.executeQuery(sql);
+        
+        // return rs;
     }
 
     public void removeHotel(int ID) {
@@ -44,26 +71,24 @@ public class HotelController {
     }
 
     public static void main( String[] args ) throws Exception {
-		Connection conn = null;
-		Statement stmt = null;  
-		try
-		{
-			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:HotelDB.db");
-			stmt = conn.createStatement();
-		 //	stmt.executeUpdate("INSERT INTO Hotel VALUES('38','Hotel Sudurnes','South','134')");
-		
-        /* Ath, ég commentaði línuna hér að ofan út, því Hótel Suðurnes er komið inn núna
-        ef á að keyra aftur þarf að setja inn ný gildi því annars kemur villa út af primary key :) */
+        addHotel(999, "TestHotel", "tester");
+    }
 
-		}
-		catch( Exception e )
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			if( conn!=null ) conn.close();
-        }
-	}
+    // Þetta var í Hotel.java, held þetta ætti að vera hérna frekar
+    // jafnvel enn frekar í roomController
+    /*
+    public void addRoom(int roomID, int hotelID, int price, char available) {
+        String sql = "INSERT INTO Room VALUES(" + roomID + hotelID + price + available + ");";
+    }
+  
+    public void removeRoom(int roomID) {
+        String sql = "DELETE FROM Room WHERE roomID = " + roomID + ";";
+    }
+
+    public void updateAvailability(int roomID, char a) {
+        String sql = "UPDATE Room SET available = "+ a + "WHERE roomID = " + roomID + ";";
+    }
+    */
+
+
 }
