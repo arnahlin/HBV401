@@ -1,61 +1,91 @@
 // javac ReservationController.java
 // java -cp .:sqlite-jdbc-3.18.0.jar ReservationController
 // SQLite skrain HotelDB.db inniheldur Hotel gagnagrunninn.
-// .read CreateTables.sql til að sjá hvort breytingin hafi komist inn.
 
 import java.sql.*;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdIn;
 import java.util.Date;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ReservationController {
 
-	Connection conn = null;
+	/**
+     * Connect to the HotelDB.db database
+     * @return the Connection object
+     */
+    private Connection connect() {
+        String url = "jdbc:sqlite:HotelDB.db";
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return conn;
+    }
 
-
-	public void newGuest(String name, String kennitala, int reservationID) throws Exception {
+	/** 
+	 * Insert new Guest into Guest table
+	 * **/
+	public void insertNewGuest(String name, String kennitala, int reservationID) {
 		try {
-			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:HotelDB.db");
+			Connection conn = this.connect();
 			String newGuest = "INSERT INTO Guest VALUES('" + name + "','" + kennitala + "','" + String.valueOf(reservationID) + "')"; // Setting a new Guest into table Guest in HotelDB
 			PreparedStatement pstmt1 = conn.prepareStatement(newGuest);
 			pstmt1.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (conn != null)
-				conn.close();
-		}
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
 	}
 
-	public void bookRoom(int resID, String name, Date checkIn, Date checkOut, int roomID) throws Exception {
-		PreparedStatement pstmt = null;
-		
-
-		try { // athuga hvort herbergi sé laust
-			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:HotelDB.db");
-			String avail = "SELECT roomID, available FROM Room WHERE available='y' AND roomID=789 AND hotelID=18";
-			pstmt = conn.prepareStatement(avail);
-			ResultSet rs = pstmt.executeQuery();
-
+	/** 
+	 * Insert new reservation into Reservation table.
+	 * **/
+	public void makeNewReservation(int resID, String name, Date checkIn, Date checkOut, int roomID) {
+		try {
+			Connection conn = this.connect();
+			String avail = "SELECT roomID, available FROM Room WHERE available='y' AND roomID=789 AND hotelID=18"; // ATH! RoomID og hotelID kemur úr search.
+			PreparedStatement pstmt1 = conn.prepareStatement(avail);
+			ResultSet rs = pstmt1.executeQuery();
 			if (!rs.next()) {
 				System.out.println("This room is occupied");
 			} else { // setja í Reservation töflu
 				String setReservation = "INSERT INTO Reservation VALUES('" +String.valueOf(resID)+ "','"+name+"','"+String.valueOf(checkIn)+"','"+String.valueOf(checkOut)+"','"+String.valueOf(roomID)+ "')"; // setting in Room table to be occupied.
-				PreparedStatement pstmt1 = conn.prepareStatement(setReservation);
-				pstmt1.executeUpdate();
-				String setBooked = "UPDATE Room set available='y' WHERE roomID=789 AND hotelID=18"; // updeita herbergi í Room yfir í available = n, eftir að klára þessa.
+				PreparedStatement pstmt = conn.prepareStatement(setReservation);
+				pstmt.executeUpdate();
+				String setBooked = "UPDATE Room set available='y' WHERE roomID=789 AND hotelID=18"; // updeita herbergi í Room yfir í available = n, eftir að klára þessa þegar search er tilbúið.
 				PreparedStatement pstmt2 = conn.prepareStatement(setBooked);
 				pstmt2.executeUpdate();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (conn != null)
-				conn.close();
-		}
+				} 
+			} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
 	}
+
+	/** 
+	 * Make new Reservation ID. Find max ReservationID and increment by 1.
+	 * **/
+	public int makeNewReservationID() {
+		String sql = "SELECT MAX(reservationID) FROM Reservation";
+        int max = 0;
+        try (Connection conn = this.connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+            
+            while (rs.next()) { 
+				max = rs.getInt("MAX(reservationID)");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+	return max+1;
+	}
+
 
 	public static void main(String[] args) throws Exception {
 		ReservationController test = new ReservationController();
@@ -71,9 +101,10 @@ public class ReservationController {
 		System.out.println("Kennitala: " + nyrGestur.kennitala);
 
 		Reservation newRes = new Reservation(nyrGestur.name, 20, 15);
-		newRes.ReservationID = 15;  // ath, þarf að ná í max ReservationID og hækka um 1. Á það eftir.
-		test.newGuest(nyrGestur.name, nyrGestur.kennitala, newRes.ReservationID);
-		test.bookRoom(newRes.ReservationID,nyrGestur.name,newRes.checkinDate,newRes.checkoutDate,333);
-
+		System.out.println("max " +test.makeNewReservationID());
+		
+		newRes.ReservationID = test.makeNewReservationID(); //gera nýtt reservationID (Max af dálkinum +1)
+		test.insertNewGuest(nyrGestur.name, nyrGestur.kennitala, newRes.ReservationID);
+		test.makeNewReservation(newRes.ReservationID,nyrGestur.name,newRes.checkinDate,newRes.checkoutDate,555);
 	}
 }
