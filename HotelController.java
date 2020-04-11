@@ -1,69 +1,159 @@
 
 // javac HotelController.java
-// java -cp .:sqlite-jdbc-3.18.0.jar HotelController
+// java -cp .;sqlite-jdbc-3.18.0.jar HotelController  - Windows
+// java -cp .:sqlite-jdbc-3.18.0.jar HotelController  - Mac?
 // SQLite skrain HotelDB.db inniheldur Hotel gagnagrunninn.
 
 import java.sql.*;
-import java.util.List;
 import java.util.ArrayList;
 
+// import java.util.Scanner;
 
 public class HotelController {
-    private List<Hotel> hotels;
-
-    public void addHotel(int ID, String name, String location) {
-        String sql = "INSERT INTO Hotel VALUES(" + ID + name + location + ");";
-
-        // more code comes here
+    private Connection getDatabConnection() {
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+			conn = DriverManager.getConnection("jdbc:sqlite:HotelDB.db");
+        }
+        catch(Exception e ) {
+            e.printStackTrace();
+        }
+        return conn;
     }
 
-    public void removeHotel(int ID) {
+    Connection conn = null;
+	Statement stmt = null;  
+
+    public void addHotel(int ID, String name, String location, int numRooms) throws Exception {
+        Connection conn = getDatabConnection();
+        Statement statement = conn.createStatement();
+
+        String sql = "INSERT INTO Hotel VALUES(" + ID + ",'" + name + "','"+ location +"',"+ numRooms + ");";
+
+        statement.executeUpdate(sql);
+	}
+
+    public void removeHotel(int ID) throws Exception {
+        Connection conn = getDatabConnection();
+        Statement statement = conn.createStatement();
+
         String sql = "DELETE FROM Hotel WHERE hotelID = " + ID + ";";
 
-        // more code comes here
+        statement.executeUpdate(sql);
     }
     
-    public ArrayList<Hotel> searchByLocation(String location) {
-        ArrayList<Hotel> temp = new ArrayList<Hotel>();
+    public ArrayList<Hotel> searchByLocation(String location) throws Exception {
+        Connection conn = getDatabConnection();
+        Statement statement = conn.createStatement();      
 
-        String sql = "SELECT * FROM Hotels WHERE location = " + location +";"; 
-
-        // more code comes here
+        String sql = "SELECT * FROM Hotel WHERE location = \"" + location +"\";"; 
         
-        return temp; 
+        ResultSet rs = statement.executeQuery(sql);
+
+        ArrayList<Hotel> hotels = new ArrayList<Hotel>();
+        int hotelID;
+        String hotelName; 
+        String loc;
+        int rooms;
+
+        while (rs.next()){
+            hotelID = rs.getInt("hotelID");
+            hotelName = rs.getString("name");
+            loc = rs.getString("location");
+            rooms = rs.getInt("rooms");
+            Hotel hotel = new Hotel(hotelID, hotelName, loc, rooms);
+            hotels.add(hotel);
+        }
+        
+        return hotels; 
     }
 
-    public ArrayList<Hotel> searchByName(String name) {
-        ArrayList<Hotel> temp = new ArrayList<Hotel>();
+    public ArrayList<Hotel> searchByName(String name) throws Exception {
+        Connection conn = getDatabConnection();
+        Statement statement = conn.createStatement();      
 
-        String sql = "SELECT * FROM Hotels WHERE name = " + name +";"; 
+        String sql = "SELECT * FROM Hotel WHERE name = \"" + name +"\";"; 
 
-        // more code comes here
+        ResultSet rs = statement.executeQuery(sql);
 
-        return temp; 
+        ArrayList<Hotel> hotels = new ArrayList<Hotel>();
+        int hotelID;
+        String hotelName; 
+        String loc;
+        int rooms;
+
+        while (rs.next()){
+            hotelID = rs.getInt("hotelID");
+            hotelName = rs.getString("name");
+            loc = rs.getString("location");
+            rooms = rs.getInt("rooms");
+            Hotel hotel = new Hotel(hotelID, hotelName, loc, rooms);
+            hotels.add(hotel);
+        }
+        return hotels; 
+    }
+
+    public ArrayList<Room> getRooms(int hotelID) throws Exception {
+        Connection conn = getDatabConnection();
+        Statement statement = conn.createStatement();      
+
+        String sql = "SELECT * FROM Room WHERE hotelID = \"" + hotelID +"\";"; 
+
+        ResultSet rs = statement.executeQuery(sql);
+
+        ArrayList<Room> rooms = new ArrayList<Room>();
+        // int roomID;
+        // int IDhotel;
+        // int price;
+        // String available;
+
+        while (rs.next()){
+            // roomID = rs.getInt("roomID");
+            // IDhotel = rs.getInt("hotelID");
+            // price = rs.getInt("price");
+            // available = rs.getString("available");
+            // Room room = new Room(roomID, IDhotel, price, available);
+            Room room = new Room();
+            room.setRoomID(rs.getInt("roomID"));
+            room.setHotelID(rs.getInt("hotelID"));
+            room.setPrice(rs.getInt("price"));
+            room.setAvailable(rs.getString("available"));
+            rooms.add(room);
+        }        
+        return rooms; 
     }
 
     public static void main( String[] args ) throws Exception {
-		Connection conn = null;
-		Statement stmt = null;  
-		try
-		{
-			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:HotelDB.db");
-			stmt = conn.createStatement();
-		 //	stmt.executeUpdate("INSERT INTO Hotel VALUES('38','Hotel Sudurnes','South','134')");
-		
-        /* Ath, ég commentaði línuna hér að ofan út, því Hótel Suðurnes er komið inn núna
-        ef á að keyra aftur þarf að setja inn ný gildi því annars kemur villa út af primary key :) */
+        
+        /**
+         * Test fyrir aðferðirnar hér að ofan  
+         */
+        HotelController test = new HotelController();       
+        //test.addHotel(123, "heeeeey", "t", 1);
+        //test.removeHotel(40);
+        //ArrayList<Hotel> temp = test.searchByLocation("East");
+        // ArrayList<Hotel> temp = test.searchByName("Hótel Örkin");
+        ArrayList<Room> temp = test.getRooms(10);
+        
 
-		}
-		catch( Exception e )
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			if( conn!=null ) conn.close();
+        /**
+         * Prenta út niðurstöðurnar úr leitinni
+         */
+        // Hotel array
+        // for(int i = 0; i<temp.size(); i++) {
+        //     System.out.print(temp.get(i).getHotelID()+"   ");
+        //     System.out.print(temp.get(i).getHotelName()+"   ");
+        //     System.out.println(temp.get(i).getLocation());
+        // }
+
+        // Room array
+        for(int i = 0; i<temp.size(); i++) {
+            System.out.print(temp.get(i).getRoomID()+"   ");
+            System.out.print(temp.get(i).getHotelID()+"   ");
+            System.out.print(temp.get(i).getPrice()+"   ");
+            System.out.println(temp.get(i).getAvailable());
         }
+
 	}
 }
