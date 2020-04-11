@@ -19,7 +19,6 @@ public class ReservationController {
      * @return the Connection object
      */
     private Connection connect() {
-        // SQLite connection string
         String url = "jdbc:sqlite:HotelDB.db";
         Connection conn = null;
         try {
@@ -30,6 +29,9 @@ public class ReservationController {
         return conn;
     }
 
+	/** 
+	 * Insert new Guest into Guest table
+	 * **/
 	public void insertNewGuest(String name, String kennitala, int reservationID) {
 		try {
 			Connection conn = this.connect();
@@ -41,10 +43,13 @@ public class ReservationController {
         }
 	}
 
+	/** 
+	 * Insert new reservation into Reservation table.
+	 * **/
 	public void makeNewReservation(int resID, String name, Date checkIn, Date checkOut, int roomID) {
 		try {
 			Connection conn = this.connect();
-			String avail = "SELECT roomID, available FROM Room WHERE available='y' AND roomID=789 AND hotelID=18"; // Setting a new Guest into table Guest in HotelDB
+			String avail = "SELECT roomID, available FROM Room WHERE available='y' AND roomID=789 AND hotelID=18"; // ATH! RoomID og hotelID kemur úr search.
 			PreparedStatement pstmt1 = conn.prepareStatement(avail);
 			ResultSet rs = pstmt1.executeQuery();
 			if (!rs.next()) {
@@ -53,7 +58,7 @@ public class ReservationController {
 				String setReservation = "INSERT INTO Reservation VALUES('" +String.valueOf(resID)+ "','"+name+"','"+String.valueOf(checkIn)+"','"+String.valueOf(checkOut)+"','"+String.valueOf(roomID)+ "')"; // setting in Room table to be occupied.
 				PreparedStatement pstmt = conn.prepareStatement(setReservation);
 				pstmt.executeUpdate();
-				String setBooked = "UPDATE Room set available='y' WHERE roomID=789 AND hotelID=18"; // updeita herbergi í Room yfir í available = n, eftir að klára þessa.
+				String setBooked = "UPDATE Room set available='y' WHERE roomID=789 AND hotelID=18"; // updeita herbergi í Room yfir í available = n, eftir að klára þessa þegar search er tilbúið.
 				PreparedStatement pstmt2 = conn.prepareStatement(setBooked);
 				pstmt2.executeUpdate();
 				} 
@@ -61,7 +66,10 @@ public class ReservationController {
             System.out.println(e.getMessage());
         }
 	}
- 
+
+	/** 
+	 * Make new Reservation ID. Find max ReservationID and increment by 1.
+	 * **/
 	public int makeNewReservationID() {
 		String sql = "SELECT MAX(reservationID) FROM Reservation";
         int max = 0;
