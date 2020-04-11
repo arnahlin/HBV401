@@ -1,7 +1,6 @@
 // javac ReservationController.java
 // java -cp .:sqlite-jdbc-3.18.0.jar ReservationController
 // SQLite skrain HotelDB.db inniheldur Hotel gagnagrunninn.
-// .read CreateTables.sql til að sjá hvort breytingin hafi komist inn.
 
 import java.sql.*;
 import edu.princeton.cs.algs4.StdOut;
@@ -15,8 +14,8 @@ import java.sql.Statement;
 
 public class ReservationController {
 
-	    /**
-     * Connect to the test.db database
+	/**
+     * Connect to the HotelDB.db database
      * @return the Connection object
      */
     private Connection connect() {
@@ -31,50 +30,36 @@ public class ReservationController {
         return conn;
     }
 
-	Connection conn = null;
-
-
-	public void newGuest(String name, String kennitala, int reservationID) throws Exception {
+	public void insertNewGuest(String name, String kennitala, int reservationID) {
 		try {
-			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:HotelDB.db");
+			Connection conn = this.connect();
 			String newGuest = "INSERT INTO Guest VALUES('" + name + "','" + kennitala + "','" + String.valueOf(reservationID) + "')"; // Setting a new Guest into table Guest in HotelDB
 			PreparedStatement pstmt1 = conn.prepareStatement(newGuest);
 			pstmt1.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (conn != null)
-				conn.close();
-		}
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
 	}
 
-
-	public void bookRoom(int resID, String name, Date checkIn, Date checkOut, int roomID) throws Exception {
-		PreparedStatement pstmt = null;
-		try { // athuga hvort herbergi sé laust
-			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:HotelDB.db");
-			String avail = "SELECT roomID, available FROM Room WHERE available='y' AND roomID=789 AND hotelID=18";
-			pstmt = conn.prepareStatement(avail);
-			ResultSet rs = pstmt.executeQuery();
-
+	public void makeNewReservation(int resID, String name, Date checkIn, Date checkOut, int roomID) {
+		try {
+			Connection conn = this.connect();
+			String avail = "SELECT roomID, available FROM Room WHERE available='y' AND roomID=789 AND hotelID=18"; // Setting a new Guest into table Guest in HotelDB
+			PreparedStatement pstmt1 = conn.prepareStatement(avail);
+			ResultSet rs = pstmt1.executeQuery();
 			if (!rs.next()) {
 				System.out.println("This room is occupied");
 			} else { // setja í Reservation töflu
 				String setReservation = "INSERT INTO Reservation VALUES('" +String.valueOf(resID)+ "','"+name+"','"+String.valueOf(checkIn)+"','"+String.valueOf(checkOut)+"','"+String.valueOf(roomID)+ "')"; // setting in Room table to be occupied.
-				PreparedStatement pstmt1 = conn.prepareStatement(setReservation);
-				pstmt1.executeUpdate();
+				PreparedStatement pstmt = conn.prepareStatement(setReservation);
+				pstmt.executeUpdate();
 				String setBooked = "UPDATE Room set available='y' WHERE roomID=789 AND hotelID=18"; // updeita herbergi í Room yfir í available = n, eftir að klára þessa.
 				PreparedStatement pstmt2 = conn.prepareStatement(setBooked);
 				pstmt2.executeUpdate();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (conn != null)
-				conn.close();
-		}
+				} 
+			} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
 	}
  
 	public int makeNewReservationID() {
@@ -110,8 +95,8 @@ public class ReservationController {
 		Reservation newRes = new Reservation(nyrGestur.name, 20, 15);
 		System.out.println("max " +test.makeNewReservationID());
 		
-		newRes.ReservationID = test.makeNewReservationID();//gera nýtt reservationID (Max af dálkinum +1)
-		test.newGuest(nyrGestur.name, nyrGestur.kennitala, newRes.ReservationID);
-		test.bookRoom(newRes.ReservationID,nyrGestur.name,newRes.checkinDate,newRes.checkoutDate,444);
+		newRes.ReservationID = test.makeNewReservationID(); //gera nýtt reservationID (Max af dálkinum +1)
+		test.insertNewGuest(nyrGestur.name, nyrGestur.kennitala, newRes.ReservationID);
+		test.makeNewReservation(newRes.ReservationID,nyrGestur.name,newRes.checkinDate,newRes.checkoutDate,555);
 	}
 }
