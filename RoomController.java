@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+enum Type {
+    small, medium, large
+}
 public class RoomController {
-
     private Connection dataBase() {
         Connection conn = null;
 		try {
@@ -21,11 +23,29 @@ public class RoomController {
         return conn;
 	}
 
-    public ArrayList<Room> search() throws SQLException {
+    public ArrayList<Room> searchByPrice(int priceBot, int priceTop) throws SQLException {
 		Connection conn = dataBase();
 		Statement stmt = conn.createStatement();
 		ArrayList<Room> temp = new ArrayList<Room>();
-		ResultSet srs = stmt.executeQuery("SELECT * FROM Room");
+		String sql = "SELECT * FROM Room WHERE price BETWEEN " + priceBot + " AND "+ priceTop + ";"; 
+		ResultSet srs = stmt.executeQuery(sql);
+		while (srs.next()) {
+			Room room = new Room();
+			room.setRoomID(srs.getInt("roomID"));
+			room.setHotelID(srs.getInt("hotelID"));
+			room.setPrice(srs.getInt("price"));
+			room.setAvailable(srs.getString("available"));
+			temp.add(room);
+		}
+		return temp;
+	}
+	
+	public ArrayList<Room> searchByType(Type type) throws SQLException {
+		Connection conn = dataBase();
+		Statement stmt = conn.createStatement();
+		ArrayList<Room> temp = new ArrayList<Room>();
+		String sql = "SELECT * WHERE type = \"" + type +"\";";
+		ResultSet srs = stmt.executeQuery(sql);
 		while (srs.next()) {
 			Room room = new Room();
 			room.setRoomID(srs.getInt("roomID"));
@@ -46,12 +66,11 @@ public class RoomController {
 //		pstmt.executeUpdate();
 //	}
 	
-
     public static void main( String[] args ) throws Exception {
 		Scanner s = new Scanner(System.in);
 		RoomController test = new RoomController();
 		
-		System.out.println(Arrays.toString(test.search().toArray()));
+		System.out.println(Arrays.toString(test.searchByPrice(15000, 25001).toArray()));
 
 	}
 }

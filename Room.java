@@ -8,18 +8,6 @@ public class Room {
     private List reserved; // List of reserved rooms
     private String available; // List of available rooms
 
-    private enum type {
-        small, medium, large
-    }
-
-    // Smiður
-    // public Room(int roomID, int hotelID, int price, String available) {
-    //     this.roomID = roomID;
-    //     this.hotelID = hotelID;
-    //     this.price = price;
-    //     this.available = available;
-    // }
-
     public Room() {
 
     }
