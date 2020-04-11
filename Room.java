@@ -12,7 +12,6 @@ public class Room {
         small, medium, large
     }
 
-<<<<<<< HEAD
     // Smiður
     // public Room(int roomID, int hotelID, int price, String available) {
     //     this.roomID = roomID;
@@ -20,44 +19,11 @@ public class Room {
     //     this.price = price;
     //     this.available = available;
     // }
-=======
-    public Room() {
->>>>>>> 4b41248a12c6ea49f4ded84535b47c4e0a67a076
 
     public Room() {
 
     }
 
-    public int getRoomID(){
-        return roomID;
-    }
-
-<<<<<<< HEAD
-    public void setRoomID(int roomID){
-        this.roomID = roomID;
-    }
-
-    public int getHotelID() {
-        return hotelID;
-    }
-
-    public void setHotelID(int hotelID) {
-        this.hotelID = hotelID;
-    }
-
-    public String getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(final String available) {
-        this.available = available;
-    }
-
-    public Room(final int roomID) {
-        this.roomID = roomID;
-    }
-
-=======
     public int getRoomID(){
         return roomID;
     }
@@ -86,7 +52,6 @@ public class Room {
         this.roomID = roomID;
     }
 
->>>>>>> 4b41248a12c6ea49f4ded84535b47c4e0a67a076
     public int getPrice() {
         return price;
     }
