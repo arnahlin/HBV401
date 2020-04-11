@@ -5,14 +5,14 @@ public class Hotel {
     private int hotelID;
     private String hotelName;
     private String location;
-    private List<Integer> rooms; // maybe a list of roomId's?
+    // private List<Integer> rooms; // maybe a list of roomId's?
+    private int rooms;
    
-
-    // variable rooms is missing from this method, not sure how to do this
-    // rooms is set as an int in the hotel table in database
-    public Hotel(String hotelName, String location) { 
+    public Hotel(int hotelID, String hotelName, String location, int rooms) { 
+        this.hotelID = hotelID;
         this.hotelName = hotelName;
         this.location = location;
+        this.rooms = rooms;
     }
 
     public int getHotelID() {
