@@ -7,8 +7,29 @@ import java.sql.*;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdIn;
 import java.util.Date;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ReservationController {
+
+	    /**
+     * Connect to the test.db database
+     * @return the Connection object
+     */
+    private Connection connect() {
+        // SQLite connection string
+        String url = "jdbc:sqlite:HotelDB.db";
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return conn;
+    }
 
 	Connection conn = null;
 
@@ -28,10 +49,9 @@ public class ReservationController {
 		}
 	}
 
+
 	public void bookRoom(int resID, String name, Date checkIn, Date checkOut, int roomID) throws Exception {
 		PreparedStatement pstmt = null;
-		
-
 		try { // athuga hvort herbergi sé laust
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:HotelDB.db");
@@ -56,6 +76,23 @@ public class ReservationController {
 				conn.close();
 		}
 	}
+ 
+	public int makeNewReservationID() {
+		String sql = "SELECT MAX(reservationID) FROM Reservation";
+        int max = 0;
+        try (Connection conn = this.connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+            
+            while (rs.next()) { 
+				max = rs.getInt("MAX(reservationID)");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+	return max+1;
+	}
+
 
 	public static void main(String[] args) throws Exception {
 		ReservationController test = new ReservationController();
@@ -71,9 +108,10 @@ public class ReservationController {
 		System.out.println("Kennitala: " + nyrGestur.kennitala);
 
 		Reservation newRes = new Reservation(nyrGestur.name, 20, 15);
-		newRes.ReservationID = 15;  // ath, þarf að ná í max ReservationID og hækka um 1. Á það eftir.
+		System.out.println("max " +test.makeNewReservationID());
+		
+		newRes.ReservationID = test.makeNewReservationID();//gera nýtt reservationID (Max af dálkinum +1)
 		test.newGuest(nyrGestur.name, nyrGestur.kennitala, newRes.ReservationID);
-		test.bookRoom(newRes.ReservationID,nyrGestur.name,newRes.checkinDate,newRes.checkoutDate,333);
-
+		test.bookRoom(newRes.ReservationID,nyrGestur.name,newRes.checkinDate,newRes.checkoutDate,444);
 	}
 }
