@@ -8,10 +8,6 @@ public class Room {
     private List reserved; // List of reserved rooms
     private String available; // List of available rooms
 
-    private enum type {
-        small, medium, large
-    }
-
     public Room() {
 
     }
