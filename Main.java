@@ -7,25 +7,26 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Velkomin/n í hótel-leitarvélina. Vinsamlegast veldu hvort tú vilt leita eftir hótelum eda herbergjum.");
-        System.out.println("Sládu inn 'ht' fyrir hótel eda 'he' fyrir herbergi.");
+        System.out.println("Welcome to the Hotel search engine.");
+        System.out.println("Please select if you want to search by hotels or rooms.");
+        System.out.println("Type (h) for hotels or (r) for rooms.");
         Scanner input = new Scanner(System.in);
         boolean validInput = false;
 
         while (!validInput) {
             String searchType = input.nextLine();
 
-            if (searchType.equals("ht")) {
+            if (searchType.equals("h")) {
                 validInput = true;
                 HotelController.main(null);
-            } else if (searchType.equals("he")) {
+            } else if (searchType.equals("r")) {
                 validInput = true;
                 RoomController.main(null);
             } else {
-                System.out.println("Vinsamlegast sláid inn ht eda he");
+                System.out.println("Please press (h) or (r).");
             }
         }
-        //System.out.println("nedst main í Main");
+        
         input.close();
 
     }

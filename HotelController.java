@@ -120,14 +120,14 @@ public class HotelController {
         Scanner input = new Scanner(System.in);
         boolean validInput = false;
 
-        System.out.println("Veldu leit eftir stadsetningu (s) eda leit eftir nafni (n):");
+        System.out.println("Would you like to search by location (l) or name (n)?");
         while (!validInput) {
             String searchType = input.nextLine();
 
-            if (searchType.equals("s")){
+            if (searchType.equals("l")){
                 validInput = true;
                 boolean validLoc = false;
-                System.out.println("Veldu stadsetningu: South, North, West eda East");
+                System.out.println("Pick a location: South, North, West or East");
                 while(!validLoc) {
                     String loc = input.nextLine();
                     if(loc.equals("South")||loc.equals("North")||loc.equals("East") || loc.equals("West")) {
@@ -146,7 +146,7 @@ public class HotelController {
                         }
                         return;
                     } else {
-                        System.out.println("Sládu inn 'South', 'North', 'West' eda 'East'");
+                        System.out.println("Please enter (South), (North), (West) or (East)");
                     }
                 }
 
@@ -154,7 +154,7 @@ public class HotelController {
             else if ( searchType.equals("n")) {
                 validInput = true;
                 boolean validName = false;
-                System.out.println("Sládu inn nafn hótelsins:");
+                System.out.println("Enter the hotel name:");
                 while(!validName) {
                     String name = input.nextLine();
                     if(name instanceof String) {
@@ -173,43 +173,19 @@ public class HotelController {
                                 System.out.println();
                             }
                         } else {
-                            System.out.println("Leitin skiladi engri nidurstödu, viltu leita aftur? (y/n)");
+                            System.out.println("This search had no results, try again? (y/n)");
                             String ans = input.nextLine();
                             if(ans.equals("y")){
                                 validName = false;
                             } else { return;}   
                         }
-                    } else { System.out.println("Sládu inn nafn:"); }
+                    } else { System.out.println("Enter the hotel name:"); }
                 }
                 return;
             } else {
-                System.out.println("Vinsamlegast sládu inn s fyrir stadsetningu eda n fyrir nafn.");
-            }
-            
+                System.out.println("Please enter (l) for location or (n) for name.");
+            }   
         }
-
         input.close();
-
-        /**
-         * Test fyrir aðferðirnar hér að ofan  
-         */
-        // HotelController test = new HotelController();       
-        //test.addHotel(123, "tester", "t", 1);
-        //test.removeHotel(40);
-        // ArrayList<Room> temp = test.getRooms(10);
-        
-
-        /**
-         * Prenta út niðurstöðurnar úr leitinni
-         */
-
-        // Room array
-        // for(int i = 0; i<temp.size(); i++) {
-        //     System.out.print(temp.get(i).getRoomID()+"   ");
-        //     System.out.print(temp.get(i).getHotelID()+"   ");
-        //     System.out.print(temp.get(i).getPrice()+"   ");
-        //     System.out.println(temp.get(i).getAvailable());
-        // }
-
 	}
 }

@@ -78,14 +78,14 @@ public class RoomController {
 
 		boolean validInput = false;
 
-        System.out.println("Veldu leit eftir verdi (v) eda leit eftir staerd (s):");
+        System.out.println("Would you like to search by price (p) or size (s):");
         while (!validInput) {
             String searchType = input.nextLine();
 
-            if ( searchType.equals("v") ) { // leit eftir verði
+            if ( searchType.equals("p") ) { // leit eftir verði
                 validInput = true;
                 boolean validPrice = false;
-                System.out.println("Sládu inn verdbil. Laegsta verd og haesta verd.");
+                System.out.println("Please enter the price range. Lowest and higest price.");
                 while(!validPrice) {
 					int priceBot = input.nextInt();
 					int priceTop = input.nextInt();
@@ -109,8 +109,8 @@ public class RoomController {
 						}			
                         return;
                     } else {
-						System.out.println("Eitthvad fór úrskeidis.");
-                        System.out.println("Sládu inn laegsta og haesta verd:");
+						System.out.println("Something went wrong.");
+                        System.out.println("Please enter the price range:");
                     }
                 }
 
@@ -118,13 +118,13 @@ public class RoomController {
             else if ( searchType.equals("s")) { // leit eftir stærð
                 validInput = true;
                 boolean validSize = false;
-                System.out.println("Veldu staerd: small, medium eda large.");
+                System.out.println("Please select the size: small, medium or large.");
                 while(!validSize) {
                     String size = input.nextLine();
                     if(size.equals("small")||size.equals("medium")||size.equals("large")) {
-                        ArrayList<Room> rooms = test.searchByType(size);
-							validSize = true;
-							
+						validSize = true;
+						ArrayList<Room> rooms = test.searchByType(size);
+													
 						// Prenta headers 
 						System.out.printf("%-6s","ID"); System.out.printf("%-8s","Price");
 						System.out.printf("%-12s","Available"); System.out.printf("%-5s","Type");
@@ -140,10 +140,10 @@ public class RoomController {
 							System.out.println();
 						}
 							return;
-					} else { System.out.println("Sládu inn staerd: 'small', 'medium', 'large'"); }
+					} else { System.out.println("Enter the size: (small), (medium), (large)"); }
                 }
             } else {
-                System.out.println("Vinsamlegast sládu inn verd.");
+                System.out.println("Please enter (p) for price or (s) for size.");
             }
         }
         input.close();
