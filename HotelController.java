@@ -7,7 +7,7 @@
 import java.sql.*;
 import java.util.ArrayList;
 
-// import java.util.Scanner;
+import java.util.Scanner;
 
 public class HotelController {
     private Connection getDatabConnection() {
@@ -94,6 +94,7 @@ public class HotelController {
         return hotels; 
     }
 
+    // Kannski meira viðeigandi inni í RoomController?
     public ArrayList<Room> getRooms(int hotelID) throws Exception {
         Connection conn = getDatabConnection();
         Statement statement = conn.createStatement();      
@@ -103,17 +104,7 @@ public class HotelController {
         ResultSet rs = statement.executeQuery(sql);
 
         ArrayList<Room> rooms = new ArrayList<Room>();
-        // int roomID;
-        // int IDhotel;
-        // int price;
-        // String available;
-
         while (rs.next()){
-            // roomID = rs.getInt("roomID");
-            // IDhotel = rs.getInt("hotelID");
-            // price = rs.getInt("price");
-            // available = rs.getString("available");
-            // Room room = new Room(roomID, IDhotel, price, available);
             Room room = new Room();
             room.setRoomID(rs.getInt("roomID"));
             room.setHotelID(rs.getInt("hotelID"));
@@ -125,35 +116,100 @@ public class HotelController {
     }
 
     public static void main( String[] args ) throws Exception {
-        
+        HotelController test = new HotelController();
+        Scanner input = new Scanner(System.in);
+        boolean validInput = false;
+
+        System.out.println("Veldu leit eftir stadsetningu (s) eda leit eftir nafni (n):");
+        while (!validInput) {
+            String searchType = input.nextLine();
+
+            if (searchType.equals("s")){
+                validInput = true;
+                boolean validLoc = false;
+                System.out.println("Veldu staðsetningu: South, North, West eda East");
+                while(!validLoc) {
+                    String loc = input.nextLine();
+                    if(loc.equals("South")||loc.equals("North")||loc.equals("East") || loc.equals("West")) {
+                        ArrayList<Hotel> hotels = test.searchByLocation(loc);
+                        
+                        // Prenta niðurstöður úr leitinni
+                        System.out.printf("%-5s","ID"); System.out.printf("%-35s","Name");
+                        System.out.printf("%-10s","Location"); System.out.printf("%-4s","No.rooms");
+                        System.out.println(); System.out.println("-".repeat(58));
+                        for(int i = 0; i<hotels.size(); i++) {
+                            System.out.printf("%-5s",hotels.get(i).getHotelID());
+                            System.out.printf("%-35s",hotels.get(i).getHotelName());
+                            System.out.printf("%-10s",hotels.get(i).getLocation());
+                            System.out.printf("%-4s",hotels.get(i).getRoomCount());
+                            System.out.println();
+                        }
+                        return;
+                    } else {
+                        System.out.println("Sládu inn 'South', 'North', 'West' eda 'East'");
+                    }
+                }
+
+            } 
+            else if ( searchType.equals("n")) {
+                validInput = true;
+                boolean validName = false;
+                System.out.println("Sládu inn nafn hótelsins:");
+                while(!validName) {
+                    String name = input.nextLine();
+                    if(name instanceof String) {
+                        ArrayList<Hotel> hotels = test.searchByName(name);
+                        if(!hotels.isEmpty()){
+                            validName = true;
+                            // Prenta niðurstöður úr leitinni
+                            System.out.printf("%-5s","ID"); System.out.printf("%-35s","Name");
+                            System.out.printf("%-10s","Location"); System.out.printf("%-4s","No.rooms");
+                            System.out.println(); System.out.println("-".repeat(58));
+                            for(int i = 0; i<hotels.size(); i++) {
+                                System.out.printf("%-5s",hotels.get(i).getHotelID());
+                                System.out.printf("%-35s",hotels.get(i).getHotelName());
+                                System.out.printf("%-10s",hotels.get(i).getLocation());
+                                System.out.printf("%-4s",hotels.get(i).getRoomCount());
+                                System.out.println();
+                            }
+                        } else {
+                            System.out.println("Leitin skiladi engri nidurstödu, viltu leita aftur? (y/n)");
+                            String ans = input.nextLine();
+                            if(ans.equals("y")){
+                                validName = false;
+                            } else { return;}   
+                        }
+                    } else { System.out.println("Sládu inn nafn:"); }
+                }
+                return;
+            } else {
+                System.out.println("Vinsamlegast sládu inn s fyrir stadsetningu eda n fyrir nafn.");
+            }
+            
+        }
+
+        input.close();
+
         /**
          * Test fyrir aðferðirnar hér að ofan  
          */
-        HotelController test = new HotelController();       
-        //test.addHotel(123, "heeeeey", "t", 1);
+        // HotelController test = new HotelController();       
+        //test.addHotel(123, "tester", "t", 1);
         //test.removeHotel(40);
-        //ArrayList<Hotel> temp = test.searchByLocation("East");
-        // ArrayList<Hotel> temp = test.searchByName("Hótel Örkin");
-        ArrayList<Room> temp = test.getRooms(10);
+        // ArrayList<Room> temp = test.getRooms(10);
         
 
         /**
          * Prenta út niðurstöðurnar úr leitinni
          */
-        // Hotel array
-        // for(int i = 0; i<temp.size(); i++) {
-        //     System.out.print(temp.get(i).getHotelID()+"   ");
-        //     System.out.print(temp.get(i).getHotelName()+"   ");
-        //     System.out.println(temp.get(i).getLocation());
-        // }
 
         // Room array
-        for(int i = 0; i<temp.size(); i++) {
-            System.out.print(temp.get(i).getRoomID()+"   ");
-            System.out.print(temp.get(i).getHotelID()+"   ");
-            System.out.print(temp.get(i).getPrice()+"   ");
-            System.out.println(temp.get(i).getAvailable());
-        }
+        // for(int i = 0; i<temp.size(); i++) {
+        //     System.out.print(temp.get(i).getRoomID()+"   ");
+        //     System.out.print(temp.get(i).getHotelID()+"   ");
+        //     System.out.print(temp.get(i).getPrice()+"   ");
+        //     System.out.println(temp.get(i).getAvailable());
+        // }
 
 	}
 }

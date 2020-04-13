@@ -23,6 +23,10 @@ public class Hotel {
         return hotelName;
     }
 
+    public int getRoomCount() {
+        return rooms;
+    }
+
     public String getLocation() {
         return location;
     }
