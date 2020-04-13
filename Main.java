@@ -26,8 +26,18 @@ public class Main {
                 System.out.println("Please press (h) or (r).");
             }
         }
-        
-        input.close();
+        System.out.println("If you want to book a room please press (b) or press (q) to quit.");
+        String book = input.nextLine();
+        if( book.equals("b") ) {
+            ReservationController.main(null);            
+        } 
+        else if( book.equals("q") ) {
+            System.out.println("Quitting");
+            input.close();
+            return;
+        } 
+        else { System.out.println("Please enter (b) or (q)."); }
 
+        input.close();
     }
 }

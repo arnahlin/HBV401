@@ -3,14 +3,17 @@
 // SQLite skrain HotelDB.db inniheldur Hotel gagnagrunninn.
 
 import java.sql.*;
-import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.StdIn;
+// import edu.princeton.cs.algs4.StdOut;
+// import edu.princeton.cs.algs4.StdIn;
 import java.util.Date;
+import java.util.Scanner;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
+
 
 public class ReservationController {
 
@@ -49,7 +52,7 @@ public class ReservationController {
 	public void makeNewReservation(int resID, String name, Date checkIn, Date checkOut, int roomID) {
 		try {
 			Connection conn = this.connect();
-			String avail = "SELECT roomID, available FROM Room WHERE available='y' AND roomID=789 AND hotelID=18"; // ATH! RoomID og hotelID kemur úr search.
+			String avail = "SELECT roomID, available FROM Room WHERE available='y' AND roomID=" + roomID +";"; // ég tók hotelID burt - Arna
 			PreparedStatement pstmt1 = conn.prepareStatement(avail);
 			ResultSet rs = pstmt1.executeQuery();
 			if (!rs.next()) {
@@ -63,7 +66,7 @@ public class ReservationController {
 				pstmt2.executeUpdate();
 				} 
 			} catch (SQLException e) {
-            System.out.println(e.getMessage());
+				System.out.println(e.getMessage());
         }
 	}
 
@@ -88,27 +91,39 @@ public class ReservationController {
 
 
 	public static void main(String[] args) throws Exception {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Please enter the ID of the room you want to book.");
+		int roomID = input.nextInt();
+		input.nextLine();
 		ReservationController test = new ReservationController();
-		Guest nyrGestur = new Guest();
-		StdOut.print("Enter full name and ID number ");
-
-		String nafn = StdIn.readLine();
-		nyrGestur.setName(nafn);
-		String IDnumber = StdIn.readLine();
-		nyrGestur.setId(IDnumber);
-
-		System.out.println("Nafn: " + nyrGestur.name);
-		System.out.println("Kennitala: " + nyrGestur.kennitala);
-
-		Reservation newRes = new Reservation(nyrGestur.name, 20, 15);
-<<<<<<< HEAD
-		System.out.println("max " +test.makeNewReservationID());
-=======
-		System.out.println("Nýtt res ID " +test.makeNewReservationID());
->>>>>>> thuri
+		Guest guest = new Guest();
+		System.out.println("Please enter your full name:");
+		String name = input.nextLine();
+		guest.setName(name);
+		System.out.println("Please enter your kennitala:");
+		String kt = input.nextLine();
+		guest.setId(kt);
+		System.out.println("Please enter check in date:"); // Biðja um ákveðið format? YYYY-MM-DD
+		int checkIn = input.nextInt(); // int svo forritið keyri, á að verða string eins og í línunni fyrir neðan
+		// String checkIn = input.nextLine();
+		System.out.println("Please enter check out date:"); // Biðja um ákveðið format?
+		int checkOut = input.nextInt(); // int svo forritið keyri, á að verða string eins og í línunni fyrir neðan
+		// String checkOut = input.nextLine();
 		
+		Reservation newRes = new Reservation(name, checkIn, checkOut);
 		newRes.ReservationID = test.makeNewReservationID(); //gera nýtt reservationID (Max af dálkinum +1)
-		test.insertNewGuest(nyrGestur.name, nyrGestur.kennitala, newRes.ReservationID);
-		test.makeNewReservation(newRes.ReservationID,nyrGestur.name,newRes.checkinDate,newRes.checkoutDate,555);
+		test.insertNewGuest(guest.name, guest.kennitala, newRes.ReservationID);
+		test.makeNewReservation(newRes.ReservationID, guest.name, newRes.checkinDate, newRes.checkoutDate, roomID); 
+
+		System.out.println();
+		System.out.println("Your reservation of room "+ roomID + " was successful.");
+		System.out.println("Your reservation number is: "+ newRes.ReservationID);
+		System.out.println("The name on the reservation is: "+ guest.name); 
+		System.out.println("Check in is on: "+ newRes.checkinDate);
+		System.out.println("Check out is on: " + newRes.checkoutDate);
+		System.out.println();
+		System.out.println("Thank you for using the Hotel search engine.");
+	
+		input.close();
 	}
 }
