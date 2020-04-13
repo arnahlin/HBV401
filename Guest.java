@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Guest {
 	public String kennitala;
 	public String name;
@@ -34,20 +32,6 @@ public class Guest {
     }
 	
 	public static void main(String[] args)  {
-			// Guest gestur = new Guest();
-			// System.out.print("Enter full name and ID number ");
-			// String nafn = "";
-			// String IDnumber = "";
-
-			// 	nafn = input.nextLine();
-			// 	gestur.setName(nafn);
-			// 	IDnumber = input.nextLine();
-			// 	gestur.setId(IDnumber);
-
-			// System.out.println("Nafn: " +gestur.name);
-			// System.out.println("Kennitala: " +gestur.kennitala);
 	}
-
-
 
 }

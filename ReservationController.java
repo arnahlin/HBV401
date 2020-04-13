@@ -3,8 +3,6 @@
 // SQLite skrain HotelDB.db inniheldur Hotel gagnagrunninn.
 
 import java.sql.*;
-// import edu.princeton.cs.algs4.StdOut;
-// import edu.princeton.cs.algs4.StdIn;
 import java.util.Date;
 import java.util.Scanner;
 import java.sql.DriverManager;
