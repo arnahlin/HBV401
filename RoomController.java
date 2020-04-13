@@ -3,49 +3,74 @@
 // SQLite skrain HotelDB.db inniheldur Hotel gagnagrunninn.
 
 import java.sql.*;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
+enum Type {
+    small, medium, large
+}
 public class RoomController {
-    private List rooms; // ætti að vera tengt við Room eh veginn
-    
-
-    /**
-     * Searhces the database for a room that meets
-     * the search criteria.
-     * @return Room object
-     */
-    // public Room search() {
-        
-    // }
-
-    /**
-     * Marks the room as booked 
-     */
-    public void bookRoom(int roomId) {
-
-    }
-
-    public static void main( String[] args ) throws Exception {
-		Connection conn = null;
-		Statement stmt = null;  
-		try
-		{
+    private Connection dataBase() {
+        Connection conn = null;
+		try {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:HotelDB.db");
-			stmt = conn.createStatement();
-		// 	stmt.executeUpdate("INSERT INTO Room VALUES('220','12','13900','y','n')");
-		
-        /* Ath, ég commentaði línuna hér að ofan út, því ef á að keyra aftur þarf að setja inn ný gildi því annars kemur villa út af primary key :) */
-
 		}
-		catch( Exception e )
-		{
+		catch( Exception e ) {
 			e.printStackTrace();
-		}
-		finally
-		{
-			if( conn!=null ) conn.close();
-		}
+        }
+        return conn;
 	}
 
+    public ArrayList<Room> searchByPrice(int priceBot, int priceTop) throws SQLException {
+		Connection conn = dataBase();
+		Statement stmt = conn.createStatement();
+		ArrayList<Room> temp = new ArrayList<Room>();
+		String sql = "SELECT * FROM Room WHERE price BETWEEN " + priceBot + " AND "+ priceTop + ";"; 
+		ResultSet srs = stmt.executeQuery(sql);
+		while (srs.next()) {
+			Room room = new Room();
+			room.setRoomID(srs.getInt("roomID"));
+			room.setHotelID(srs.getInt("hotelID"));
+			room.setPrice(srs.getInt("price"));
+			room.setAvailable(srs.getString("available"));
+			temp.add(room);
+		}
+		return temp;
+	}
+	
+	public ArrayList<Room> searchByType(Type type) throws SQLException {
+		Connection conn = dataBase();
+		Statement stmt = conn.createStatement();
+		ArrayList<Room> temp = new ArrayList<Room>();
+		String sql = "SELECT * WHERE type = \"" + type +"\";";
+		ResultSet srs = stmt.executeQuery(sql);
+		while (srs.next()) {
+			Room room = new Room();
+			room.setRoomID(srs.getInt("roomID"));
+			room.setHotelID(srs.getInt("hotelID"));
+			room.setPrice(srs.getInt("price"));
+			room.setAvailable(srs.getString("available"));
+			temp.add(room);
+		}
+		return temp;
+    }
+
+//  sé að þetta er nú þegar í reservation controller...
+//	public void bookRoom(int roomID) throws SQLException {
+//		Connection conn = dataBase();
+//		Statement stmt = conn.createStatement();
+//		String s = "UPDATE Room SET available = " + "n " + "WHERE roomID = " + roomID + ";";
+//		PreparedStatement pstmt = conn.prepareStatement(s);
+//		pstmt.executeUpdate();
+//	}
+	
+    public static void main( String[] args ) throws Exception {
+		Scanner s = new Scanner(System.in);
+		RoomController test = new RoomController();
+		
+		System.out.println(Arrays.toString(test.searchByPrice(15000, 25001).toArray()));
+
+	}
 }
