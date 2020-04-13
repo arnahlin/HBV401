@@ -27,7 +27,7 @@ public class RoomController {
 		Connection conn = dataBase();
 		Statement stmt = conn.createStatement();
 		ArrayList<Room> temp = new ArrayList<Room>();
-		String sql = "SELECT * FROM Room WHERE price BETWEEN " + priceBot + " AND "+ priceTop + ";"; 
+		String sql = "SELECT * FROM Room WHERE available = \"y\" AND price BETWEEN " + priceBot + " AND "+ priceTop + ";"; 
 		ResultSet srs = stmt.executeQuery(sql);
 		while (srs.next()) {
 			Room room = new Room();
@@ -44,7 +44,7 @@ public class RoomController {
 		Connection conn = dataBase();
 		Statement stmt = conn.createStatement();
 		ArrayList<Room> temp = new ArrayList<Room>();
-		String sql = "SELECT * WHERE type = \"" + type +"\";";
+		String sql = "SELECT * WHERE available = \"y\" AND type = \"" + type +"\";";
 		ResultSet srs = stmt.executeQuery(sql);
 		while (srs.next()) {
 			Room room = new Room();
