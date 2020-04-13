@@ -101,7 +101,7 @@ public class ReservationController {
 		System.out.println("Kennitala: " + nyrGestur.kennitala);
 
 		Reservation newRes = new Reservation(nyrGestur.name, 20, 15);
-		System.out.println("max " +test.makeNewReservationID());
+		System.out.println("Nýtt res ID " +test.makeNewReservationID());
 		
 		newRes.ReservationID = test.makeNewReservationID(); //gera nýtt reservationID (Max af dálkinum +1)
 		test.insertNewGuest(nyrGestur.name, nyrGestur.kennitala, newRes.ReservationID);
