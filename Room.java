@@ -2,11 +2,11 @@ import java.util.List;
 
 public class Room {
     private int roomID;
-    private int price;
     private int hotelID;
+    private int price;
     private boolean booked;
-    private List reserved; // List of reserved rooms
-    private String available; // List of available rooms
+    private String available; 
+    private String type;
 
     public Room() {
 
@@ -54,6 +54,14 @@ public class Room {
 
     public void setBooked(final boolean booked) {
         this.booked = booked;
+    }
+
+    public String getType(){
+        return type;
+    }
+
+    public void setType(final String type) {
+        this.type = type;
     }
 
 	public String toString()

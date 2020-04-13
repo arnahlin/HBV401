@@ -1,3 +1,7 @@
+// javac Main.java
+// java -cp .;sqlite-jdbc-3.18.0.jar Main  - Windows
+// java -cp .:sqlite-jdbc-3.18.0.jar Main  - Mac?
+
 import java.util.Scanner;
 
 public class Main {
@@ -16,7 +20,7 @@ public class Main {
                 HotelController.main(null);
             } else if (searchType.equals("he")) {
                 validInput = true;
-                // RoomController.main(null);
+                RoomController.main(null);
             } else {
                 System.out.println("Vinsamlegast sláid inn ht eda he");
             }

@@ -127,7 +127,7 @@ public class HotelController {
             if (searchType.equals("s")){
                 validInput = true;
                 boolean validLoc = false;
-                System.out.println("Veldu staðsetningu: South, North, West eda East");
+                System.out.println("Veldu stadsetningu: South, North, West eda East");
                 while(!validLoc) {
                     String loc = input.nextLine();
                     if(loc.equals("South")||loc.equals("North")||loc.equals("East") || loc.equals("West")) {
