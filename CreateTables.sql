@@ -1,7 +1,9 @@
 CREATE TABLE IF NOT EXISTS Guest( 
 name VARCHAR(100),
-kennitala VARCHAR(12) PRIMARY KEY,
-reservationID INT
+kennitala VARCHAR(12),
+reservationID INT,
+PRIMARY KEY(kennitala, reservationID),
+FOREIGN KEY(reservationID) REFERENCES Reservation(reservationID)
 );
 
 CREATE TABLE IF NOT EXISTS Hotel( 
