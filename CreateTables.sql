@@ -16,6 +16,7 @@ roomID INT,
 hotelID INT, 
 price INT, 
 available char(1),
+type VARCHAR(6),
 PRIMARY KEY(roomID, hotelID),
 FOREIGN KEY(hotelID) REFERENCES HOTEL(hotelID)
 );
