@@ -27,7 +27,7 @@ public class RoomController {
 		Connection conn = dataBase();
 		Statement stmt = conn.createStatement();
 		ArrayList<Room> temp = new ArrayList<Room>();
-		String sql = "SELECT r.roomID, r.hotelID, r.price, r.available, r.type , h.name from hotel h, room r where r.hotelID = h.hotelID AND available = \"y\" AND price BETWEEN " + priceBot + " AND " + priceTop + ";";		
+		String sql = "SELECT r.roomID, r.hotelID, r.price, r.available, r.roomType , h.name from hotel h, room r where r.hotelID = h.hotelID AND available = \"y\" AND price BETWEEN " + priceBot + " AND " + priceTop + ";";		
 		ResultSet srs = stmt.executeQuery(sql);
 		while (srs.next()) {
 			Room room = new Room();
@@ -46,7 +46,7 @@ public class RoomController {
 		Connection conn = dataBase();
 		Statement stmt = conn.createStatement();
 		ArrayList<Room> temp = new ArrayList<Room>();
-		String sql = "SELECT r.roomID, r.hotelID, r.price, r.available, r.type, h.name from hotel h, room r where r.hotelID = h.hotelID AND available = \"y\" AND type = \"" + type + "\";";		
+		String sql = "SELECT r.roomID, r.hotelID, r.price, r.available, r.roomType, h.name from hotel h, room r where r.hotelID = h.hotelID AND available = \"y\" AND type = \"" + type + "\";";		
 		ResultSet srs = stmt.executeQuery(sql);
 		while (srs.next()) {
 			Room room = new Room();
