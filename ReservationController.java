@@ -57,7 +57,7 @@ public class ReservationController {
 				String setReservation = "INSERT INTO Reservation VALUES('" +String.valueOf(resID)+ "','"+name+"','"+String.valueOf(checkIn)+"','"+String.valueOf(checkOut)+"','"+String.valueOf(roomID)+ "')"; // setting in Room table to be occupied.
 				PreparedStatement pstmt = conn.prepareStatement(setReservation);
 				pstmt.executeUpdate();
-				String setBooked = "UPDATE Room set available='y' WHERE roomID=" + roomID +";"; // Tók HotelID í burt líka hér. - Þurí.
+				String setBooked = "UPDATE Room set available='n' WHERE roomID=" + roomID +";"; // Tók HotelID í burt líka hér. - Þurí.
 				PreparedStatement pstmt2 = conn.prepareStatement(setBooked);
 				pstmt2.executeUpdate();
 				} 
@@ -134,7 +134,7 @@ public class ReservationController {
 		Reservation newRes = new Reservation(name, checkIn, checkOut);
 		boolean avail = test.searchAfterDates(roomID, newRes.checkinDate);
 		if(!avail){
-		System.out.println("the room is booked at those dates, please choose other dates or another room.");
+		System.out.println("The room is occupied at those dates, please try other dates.");
 		} else { 
 		newRes.ReservationID = test.makeNewReservationID(); //gera nýtt reservationID (Max af dálkinum +1)
 		test.insertNewGuest(guest.name, guest.kennitala, newRes.ReservationID);
@@ -148,9 +148,6 @@ public class ReservationController {
 		System.out.println("Check out is on: " + newRes.checkoutDate);
 		System.out.println();
 		System.out.println("Thank you for using the Hotel search engine.");
-	
-	
-		
 		}
 		input.close();
 	}
