@@ -36,7 +36,7 @@ public class RoomController {
 			room.setHotelName(srs.getString("name"));
 			room.setPrice(srs.getInt("price"));
 			room.setAvailable(srs.getString("available"));
-			room.setType(srs.getString("type"));
+			room.setType(srs.getString("roomType"));
 			temp.add(room);
 		}
 		return temp;
@@ -55,7 +55,7 @@ public class RoomController {
 			room.setHotelName(srs.getString("name"));
 			room.setPrice(srs.getInt("price"));
 			room.setAvailable(srs.getString("available"));
-			room.setType(srs.getString("type"));
+			room.setType(srs.getString("roomType"));
 			temp.add(room);
 		}
 		return temp;
