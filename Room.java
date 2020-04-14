@@ -4,6 +4,7 @@ public class Room {
     private int roomID;
     private int price;
     private int hotelID;
+    private String type;
     private String hotelName;
     private boolean booked;
     private List reserved; // List of reserved rooms
@@ -11,6 +12,14 @@ public class Room {
 
     public Room() {
 
+    }
+
+    public String getType(){
+        return type;
+    }
+
+    public void setType(final String type) {
+        this.type = type;
     }
 
     public String getHotelName() {
