@@ -12,12 +12,14 @@ public class Main {
         System.out.println("Type (h) for hotels or (r) for rooms.");
         Scanner input = new Scanner(System.in);
         boolean validInput = false;
+        boolean hotelSearch = false;
 
         while (!validInput) {
             String searchType = input.nextLine();
 
             if (searchType.equals("h")) {
                 validInput = true;
+                hotelSearch = true;
                 HotelController.main(null);
             } else if (searchType.equals("r")) {
                 validInput = true;
@@ -26,6 +28,12 @@ public class Main {
                 System.out.println("Please press (h) or (r).");
             }
         }
+        // if(hotelSearch) {
+        //     System.out.println("Too see rooms, enter the hotelID of the hotel you want.");
+        //     int hotelID = input.nextInt();
+        //     HotelController.getRooms(hotelID);
+        // }
+
         System.out.println("If you want to book a room please press (b) or press (q) to quit.");
         String book = input.nextLine();
         if( book.equals("b") ) {
