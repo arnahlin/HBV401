@@ -1,25 +1,20 @@
 import java.util.List;
 import java.util.Calendar;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class Reservation {
-        public List rooms; // List of rooms that the reservation contains
-        // private Room room; // ??
-
         public int ReservationID;
-     //   private Hotel hotel;
         public String guest;
-        public Date checkinDate;
-        public Date checkoutDate;
+        public String checkinDate;
+        public String checkoutDate;
 
         // smiður
-        public Reservation(String guest, int daysFromNow, int nights) {
-           //     this.hotel = hotel;
+        public Reservation(String guest, int daysFromNow, int nights) throws Exception {
                 this.guest = guest;
-        setReservationDates(daysFromNow, nights);
+        setDates(daysFromNow, nights);
         }
 
-        // Returns reservationId
         public int getReservationID() {
                 return ReservationID;
         }
@@ -28,31 +23,41 @@ public class Reservation {
                 this.ReservationID = id;
         }
 
-        public Date getCheckinDate() {
+        public String getCheckinDate() {
                 return checkinDate;
         }
 
-        public void setCheckinDate(Date checkIn) {
+        public void setCheckinDate(String checkIn) {
                 this.checkinDate = checkIn;
         }
-        /*
-        public Hotel getHotel() {
-                return hotel;
+
+        public void setCheckOutDate(String checkOut) {
+                this.checkoutDate = checkOut;
+        }
+        
+        public String getCheckOutDate() {
+                return checkoutDate;
+        }
+        
+
+        public void setDates(int daysFromNow, int nights) throws Exception {
+                try{
+                String pattern = "yyyy-MM-dd";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                Calendar c = Calendar.getInstance();
+                // CheckIn
+                c.add(Calendar.DATE, daysFromNow);
+                String checkIn = simpleDateFormat.format(c.getTime());
+                setCheckinDate(checkIn);
+                // checkOut
+                c.add(Calendar.DATE, nights);
+                String checkOut = simpleDateFormat.format(c.getTime());
+                setCheckOutDate(checkOut);
+                }
+                catch(Exception e){
+                        System.out.println(e);
+                }
         }
 
-        public void setHotel(Hotel hotel) {
-                this.hotel = hotel;
-        }
-        */
-        // ath! þarf að laga format á dagsetningu.
-        public final void setReservationDates(int daysFromNow, int nights) {
-                Calendar rightNow = Calendar.getInstance(); // getInstance method returns a Calendar object whose calendar fields have been initialized with the current date and time:
-
-                rightNow.set(rightNow.get(Calendar.YEAR), rightNow.get(Calendar.MONTH), rightNow.get(Calendar.DAY_OF_MONTH) + daysFromNow, 0, 0, 0);
-
-                this.checkinDate = rightNow.getTime();
-                rightNow.add(Calendar.DAY_OF_MONTH, nights);
-                this.checkoutDate = rightNow.getTime();
-        }
 
 }

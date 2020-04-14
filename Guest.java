@@ -1,9 +1,3 @@
-import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.StdIn;
-/**
- * Hotel booking Guest.
- * 
- */
 public class Guest {
 	public String kennitala;
 	public String name;
@@ -38,20 +32,6 @@ public class Guest {
     }
 	
 	public static void main(String[] args)  {
-			Guest gestur = new Guest();
-			StdOut.print("Enter full name and ID number ");
-			String nafn = "";
-			String IDnumber = "";
-
-				nafn = StdIn.readLine();
-				gestur.setName(nafn);
-				IDnumber = StdIn.readLine();
-				gestur.setId(IDnumber);
-
-			System.out.println("Nafn: " +gestur.name);
-			System.out.println("Kennitala: " +gestur.kennitala);
-		}
-
-
+	}
 
 }
