@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class Room {
     private int roomID;
     private int price;
@@ -7,7 +5,6 @@ public class Room {
     private String type;
     private String hotelName;
     private boolean booked;
-    private List reserved; // List of reserved rooms
     private String available; // List of available rooms
 
     public Room() {
@@ -82,12 +79,5 @@ public class Room {
 				", price=" + this.getPrice() +
 				", available=" + this.getAvailable() + "]";
 	}
-    /**
-     * Creates the reservation for the room? Is this supposed to be here or in the
-     * ReservationController?
-     */
-    public void makeReservation(final int roomID, final int price, final boolean booked) {
-        final String s = "INSERT INTO Reservation VALUES(" + roomID + price + booked + ");";
-    }
 
 }
