@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
+import java.text.SimpleDateFormat;
+
 
 
 public class ReservationController {
@@ -38,6 +40,7 @@ public class ReservationController {
 			String newGuest = "INSERT INTO Guest VALUES('" + name + "','" + kennitala + "','" + String.valueOf(reservationID) + "')"; // Setting a new Guest into table Guest in HotelDB
 			PreparedStatement pstmt1 = conn.prepareStatement(newGuest);
 			pstmt1.executeUpdate();
+			conn.close(); // sleppa?
 	}
 
 	/** 
@@ -54,7 +57,7 @@ public class ReservationController {
 				String setReservation = "INSERT INTO Reservation VALUES('" +String.valueOf(resID)+ "','"+name+"','"+String.valueOf(checkIn)+"','"+String.valueOf(checkOut)+"','"+String.valueOf(roomID)+ "')"; // setting in Room table to be occupied.
 				PreparedStatement pstmt = conn.prepareStatement(setReservation);
 				pstmt.executeUpdate();
-				String setBooked = "UPDATE Room set available='n' WHERE roomID=" + roomID +";"; // Tók HotelID í burt líka hér. - Þurí.
+				String setBooked = "UPDATE Room set available='y' WHERE roomID=" + roomID +";"; // Tók HotelID í burt líka hér. - Þurí.
 				PreparedStatement pstmt2 = conn.prepareStatement(setBooked);
 				pstmt2.executeUpdate();
 				} 
@@ -76,17 +79,35 @@ public class ReservationController {
 	return max+1;
 	}
 
-	public int searchAfterDates() throws SQLException {
-		String sql = "SELECT roomID from Reservation WHERE checkIn='2020-06-01' AND checkOut='2020-06-21'";
-        int roomID = 0;
-             Connection conn = this.connect();
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql);
-            
-            while (rs.next()) { 
-				roomID = rs.getInt("roomID");
-            }
-	return roomID;
+	public boolean searchAfterDates(int roomID, String chkIn) throws Exception {
+		Connection conn = this.connect();		
+		String In = "SELECT checkIn from Reservation WHERE roomID=" +roomID +";";
+				PreparedStatement pstmt  = conn.prepareStatement(In);
+				ResultSet rst = pstmt.executeQuery();
+				if(rst.isClosed())
+    			return true;
+				String Out = "SELECT checkOut from Reservation WHERE roomID=" +roomID +";";
+				PreparedStatement pstmt2  = conn.prepareStatement(Out);
+				ResultSet r = pstmt2.executeQuery();
+				if(r.isClosed())
+    			return true;
+				
+				String pattern = "yyyy-MM-dd";
+                SimpleDateFormat format = new SimpleDateFormat(pattern);
+				Date resChkIn = format.parse(rst.getString(1));
+				Date request = format.parse(chkIn);
+				Date resChkOut = format.parse(r.getString(1));
+				
+				if(request.compareTo(resChkIn) > 0 || request.compareTo(resChkIn)== 0){
+					if(request.compareTo(resChkOut) < 0 || request.compareTo(resChkOut)== 0 )
+					conn.close();
+					return false;
+				} else {
+					conn.close();
+					return true;
+				}
+				
+				
 	}
 
 
@@ -111,6 +132,10 @@ public class ReservationController {
 		// String checkOut = input.nextLine();
 		
 		Reservation newRes = new Reservation(name, checkIn, checkOut);
+		boolean avail = test.searchAfterDates(roomID, newRes.checkinDate);
+		if(!avail){
+		System.out.println("the room is booked at those dates, please choose other dates or another room.");
+		} else { 
 		newRes.ReservationID = test.makeNewReservationID(); //gera nýtt reservationID (Max af dálkinum +1)
 		test.insertNewGuest(guest.name, guest.kennitala, newRes.ReservationID);
 		test.makeNewReservation(newRes.ReservationID, guest.name, newRes.checkinDate, newRes.checkoutDate, roomID); 
@@ -124,6 +149,9 @@ public class ReservationController {
 		System.out.println();
 		System.out.println("Thank you for using the Hotel search engine.");
 	
+	
+		
+		}
 		input.close();
 	}
 }
