@@ -4,6 +4,7 @@ public class Room {
     private int roomID;
     private int price;
     private int hotelID;
+    private String hotelName;
     private boolean booked;
     private List reserved; // List of reserved rooms
     private String available; // List of available rooms
@@ -12,7 +13,15 @@ public class Room {
 
     }
 
-    public int getRoomID(){
+    public String getHotelName() {
+        return hotelName;
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
+    }
+
+    public int getRoomID() {
         return roomID;
     }
 
@@ -59,7 +68,8 @@ public class Room {
 	public String toString()
 	{
 		return "[Room id=" + this.roomID +
-				", hotel=" + this.hotelID + 
+                ", hotel id=" + this.hotelID +
+                ", hotel=" + this.hotelName + 
 				", price=" + this.getPrice() +
 				", available=" + this.getAvailable() + "]";
 	}

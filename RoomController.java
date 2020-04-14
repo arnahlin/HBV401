@@ -27,12 +27,13 @@ public class RoomController {
 		Connection conn = dataBase();
 		Statement stmt = conn.createStatement();
 		ArrayList<Room> temp = new ArrayList<Room>();
-		String sql = "SELECT * FROM Room WHERE available = \"y\" AND price BETWEEN " + priceBot + " AND "+ priceTop + ";"; 
+		String sql = "SELECT r.roomID, r.hotelID, r.price, r.available, h.name from hotel h, room r where r.hotelID = h.hotelID AND available = \"y\" AND price BETWEEN " + priceBot + " AND "+ priceTop + ";"; 
 		ResultSet srs = stmt.executeQuery(sql);
 		while (srs.next()) {
 			Room room = new Room();
 			room.setRoomID(srs.getInt("roomID"));
 			room.setHotelID(srs.getInt("hotelID"));
+			room.setHotelName(srs.getString("name"));
 			room.setPrice(srs.getInt("price"));
 			room.setAvailable(srs.getString("available"));
 			temp.add(room);
@@ -44,7 +45,7 @@ public class RoomController {
 		Connection conn = dataBase();
 		Statement stmt = conn.createStatement();
 		ArrayList<Room> temp = new ArrayList<Room>();
-		String sql = "SELECT * WHERE available = \"y\" AND type = \"" + type +"\";";
+		String sql = "SELECT r.roomID, r.hotelID, r.price, r.available, h.name from hotel h, room r where r.hotelID = h.hotelID AND available = \"y\" AND type = \"" + type +"\";";
 		ResultSet srs = stmt.executeQuery(sql);
 		while (srs.next()) {
 			Room room = new Room();
