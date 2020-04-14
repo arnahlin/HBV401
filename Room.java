@@ -3,16 +3,25 @@ import java.util.List;
 public class Room {
     private int roomID;
     private int hotelID;
+    private String hotelName;
     private int price;
     private boolean booked;
-    private String available; 
+    private String available;
     private String type;
 
     public Room() {
 
     }
 
-    public int getRoomID(){
+    public String getHotelName() {
+        return hotelName;
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
+    }
+
+    public int getRoomID() {
         return roomID;
     }
 

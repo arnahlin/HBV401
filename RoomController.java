@@ -27,15 +27,16 @@ public class RoomController {
 		Connection conn = dataBase();
 		Statement stmt = conn.createStatement();
 		ArrayList<Room> temp = new ArrayList<Room>();
-		String sql = "SELECT * FROM Room WHERE available = \"y\" AND price BETWEEN " + priceBot + " AND "+ priceTop + ";"; 
+		String sql = "SELECT r.roomID, r.hotelID, r.price, r.available, r.type , h.name from hotel h, room r where r.hotelID = h.hotelID AND available = \"y\" AND price BETWEEN " + priceBot + " AND " + priceTop + ";";		
 		ResultSet srs = stmt.executeQuery(sql);
 		while (srs.next()) {
 			Room room = new Room();
 			room.setRoomID(srs.getInt("roomID"));
 			room.setHotelID(srs.getInt("hotelID"));
+			room.setHotelName(srs.getString("name"));
 			room.setPrice(srs.getInt("price"));
 			room.setAvailable(srs.getString("available"));
-			room.setType(srs.getString("roomType"));
+			room.setType(srs.getString("type"));
 			temp.add(room);
 		}
 		return temp;
@@ -45,15 +46,16 @@ public class RoomController {
 		Connection conn = dataBase();
 		Statement stmt = conn.createStatement();
 		ArrayList<Room> temp = new ArrayList<Room>();
-		String sql = "SELECT * FROM Room WHERE available = \"y\" AND type = \"" + type +"\";";
+		String sql = "SELECT r.roomID, r.hotelID, r.price, r.available, r.type, h.name from hotel h, room r where r.hotelID = h.hotelID AND available = \"y\" AND type = \"" + type + "\";";		
 		ResultSet srs = stmt.executeQuery(sql);
 		while (srs.next()) {
 			Room room = new Room();
 			room.setRoomID(srs.getInt("roomID"));
 			room.setHotelID(srs.getInt("hotelID"));
+			room.setHotelName(srs.getString("name"));
 			room.setPrice(srs.getInt("price"));
 			room.setAvailable(srs.getString("available"));
-			room.setType(srs.getString("roomType"));
+			room.setType(srs.getString("type"));
 			temp.add(room);
 		}
 		return temp;
@@ -92,13 +94,15 @@ public class RoomController {
                     if(price) {
                         ArrayList<Room> rooms = test.searchByPrice(priceBot, priceTop);
 						
-						// Prenta headers 
+						// Prenta headers
+						System.out.printf("%-35s","Hotel");
 						System.out.printf("%-6s","ID"); System.out.printf("%-8s","Price");
 						System.out.printf("%-12s","Available"); System.out.printf("%-5s","Type");
-						System.out.println(); System.out.println("-".repeat(32));
+						System.out.println(); System.out.println("-".repeat(66));
 
 						// Prenta niðurstöður úr leitinni
 						for(int i = 0; i<rooms.size(); i++) {
+							System.out.printf("%-35s",rooms.get(i).getHotelName());
 						    System.out.printf("%-6s",rooms.get(i).getRoomID());
 						    //System.out.printf("%-6s",rooms.get(i).getHotelID());
 						    System.out.printf("%-8s",rooms.get(i).getPrice());
@@ -125,12 +129,14 @@ public class RoomController {
 						ArrayList<Room> rooms = test.searchByType(size);
 													
 						// Prenta headers 
+						System.out.printf("%-35s","Hotel");
 						System.out.printf("%-6s","ID"); System.out.printf("%-8s","Price");
 						System.out.printf("%-12s","Available"); System.out.printf("%-5s","Type");
-						System.out.println(); System.out.println("-".repeat(32));
+						System.out.println(); System.out.println("-".repeat(66));
 
 						// Prenta niðurstöður úr leitinni
 						for(int i = 0; i<rooms.size(); i++) {
+							System.out.printf("%-35s",rooms.get(i).getHotelName());
 						    System.out.printf("%-6s",rooms.get(i).getRoomID());
 						    //System.out.printf("%-6s",rooms.get(i).getHotelID());
 						    System.out.printf("%-8s",rooms.get(i).getPrice());
