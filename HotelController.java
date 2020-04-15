@@ -98,8 +98,12 @@ public class HotelController {
         Connection conn = getDatabConnection();
         Statement statement = conn.createStatement();      
 
-        String sql = "SELECT * FROM Room WHERE hotelID = \"" + hotelID +"\";"; 
+        // String sql = "SELECT * FROM Room WHERE hotelID = \"" + hotelID +"\";"; 
+        // String sql = "SELECT * FROM Room, h.name from hotel h WHERE hotelID = \"" + hotelID +"\";"; 
 
+		// String sql = "SELECT r.roomID, r.hotelID, r.price, r.available, r.roomType, h.name from hotel h, room r where r.hotelID = h.hotelID AND available = \"y\" AND roomType = \"" + type + "\";";		
+		String sql = "SELECT r.roomID, r.hotelID, r.price, r.available, r.roomType, h.name from hotel h, room r where r.hotelID = h.hotelID AND available = \"y\" AND r.hotelID = \"" + hotelID + "\";";		
+        
         ResultSet rs = statement.executeQuery(sql);
 
         ArrayList<Room> rooms = new ArrayList<Room>();
@@ -107,8 +111,10 @@ public class HotelController {
             Room room = new Room();
             room.setRoomID(rs.getInt("roomID"));
             room.setHotelID(rs.getInt("hotelID"));
+            room.setHotelName(rs.getString("name"));
             room.setPrice(rs.getInt("price"));
             room.setAvailable(rs.getString("available"));
+            room.setType(rs.getString("roomType"));
             rooms.add(room);
         }        
         return rooms; 
@@ -183,7 +189,7 @@ public class HotelController {
                         }
                     } else { System.out.println("Enter the hotel name:"); }
                 }
-                return;
+                //return;
             } else {
                 System.out.println("Please enter (l) for location or (n) for name.");
             }   
@@ -193,19 +199,32 @@ public class HotelController {
             System.out.println("Too see rooms, enter the hotelID of the hotel you want.");
             int hotelID = input.nextInt();
             ArrayList<Room> rooms = test.getRooms(hotelID);
-            // Prenta headers 
-            System.out.printf("%-6s","ID"); System.out.printf("%-8s","Price");
-            System.out.printf("%-12s","Available"); System.out.printf("%-5s","Type");
-            System.out.println(); System.out.println("-".repeat(32));
+            boolean someRooms = false;
 
-            // Prenta niðurstöður úr leitinni
-            for(int i = 0; i<rooms.size(); i++) {
-                System.out.printf("%-6s",rooms.get(i).getRoomID());
-                //System.out.printf("%-6s",rooms.get(i).getHotelID());
-                System.out.printf("%-8s",rooms.get(i).getPrice());
-                System.out.printf("%-12s",rooms.get(i).getAvailable());
-                System.out.printf("%-5s",rooms.get(i).getType());
-                System.out.println();
+            while(!someRooms) {
+                if(!rooms.isEmpty()) {
+                    someRooms = true;
+                    // Prenta headers 
+                    System.out.printf("%-6s","ID"); System.out.printf("%-8s","Price");
+                    System.out.printf("%-9s","Type"); System.out.printf("%-35s","Hotel");
+                    // System.out.printf("%-12s","Available");
+                    System.out.println(); System.out.println("-".repeat(32));
+    
+                    // Prenta niðurstöður úr leitinni
+                    for(int i = 0; i<rooms.size(); i++) {
+                        System.out.printf("%-6s",rooms.get(i).getRoomID());
+                        //System.out.printf("%-6s",rooms.get(i).getHotelID());
+                        System.out.printf("%-8s",rooms.get(i).getPrice());
+                        System.out.printf("%-9s",rooms.get(i).getType());
+                        System.out.printf("%-35s",rooms.get(i).getHotelName());
+                        // System.out.printf("%-12s",rooms.get(i).getAvailable());
+                        System.out.println();
+                    }
+                } else { 
+                    System.out.println("This hotel has no available rooms, please pick another hotel by ID.");
+                    hotelID = input.nextInt();
+                    rooms = test.getRooms(hotelID);
+                }    
             }
         }
         //input.close();

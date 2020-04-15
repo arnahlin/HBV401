@@ -46,7 +46,7 @@ public class RoomController {
 		Connection conn = dataBase();
 		Statement stmt = conn.createStatement();
 		ArrayList<Room> temp = new ArrayList<Room>();
-		String sql = "SELECT r.roomID, r.hotelID, r.price, r.available, r.roomType, h.name from hotel h, room r where r.hotelID = h.hotelID AND available = \"y\" AND type = \"" + type + "\";";		
+		String sql = "SELECT r.roomID, r.hotelID, r.price, r.available, r.roomType, h.name from hotel h, room r where r.hotelID = h.hotelID AND available = \"y\" AND roomType = \"" + type + "\";";		
 		ResultSet srs = stmt.executeQuery(sql);
 		while (srs.next()) {
 			Room room = new Room();
@@ -106,7 +106,7 @@ public class RoomController {
 						    System.out.printf("%-6s",rooms.get(i).getRoomID());
 						    //System.out.printf("%-6s",rooms.get(i).getHotelID());
 						    System.out.printf("%-8s",rooms.get(i).getPrice());
-							System.out.printf("%-12s",rooms.get(i).getAvailable());
+							// System.out.printf("%-12s",rooms.get(i).getAvailable());
 							System.out.printf("%-5s",rooms.get(i).getType());
 							System.out.println();
 						}			
@@ -140,7 +140,7 @@ public class RoomController {
 						    System.out.printf("%-6s",rooms.get(i).getRoomID());
 						    //System.out.printf("%-6s",rooms.get(i).getHotelID());
 						    System.out.printf("%-8s",rooms.get(i).getPrice());
-							System.out.printf("%-12s",rooms.get(i).getAvailable());
+							// System.out.printf("%-12s",rooms.get(i).getAvailable());
 							System.out.printf("%-5s",rooms.get(i).getType());
 							System.out.println();
 						}
