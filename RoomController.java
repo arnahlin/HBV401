@@ -95,19 +95,19 @@ public class RoomController {
                         ArrayList<Room> rooms = test.searchByPrice(priceBot, priceTop);
 						
 						// Prenta headers
-						System.out.printf("%-35s","Hotel");
 						System.out.printf("%-6s","ID"); System.out.printf("%-8s","Price");
-						System.out.printf("%-12s","Available"); System.out.printf("%-5s","Type");
-						System.out.println(); System.out.println("-".repeat(66));
+						// System.out.printf("%-12s","Available"); 
+						System.out.printf("%-9s","Type"); System.out.printf("%-35s","Hotel");
+						System.out.println(); System.out.println("-".repeat(60));
 
 						// Prenta niðurstöður úr leitinni
 						for(int i = 0; i<rooms.size(); i++) {
-							System.out.printf("%-35s",rooms.get(i).getHotelName());
 						    System.out.printf("%-6s",rooms.get(i).getRoomID());
 						    //System.out.printf("%-6s",rooms.get(i).getHotelID());
 						    System.out.printf("%-8s",rooms.get(i).getPrice());
 							// System.out.printf("%-12s",rooms.get(i).getAvailable());
-							System.out.printf("%-5s",rooms.get(i).getType());
+							System.out.printf("%-9s",rooms.get(i).getType());
+							System.out.printf("%-35s",rooms.get(i).getHotelName());
 							System.out.println();
 						}			
                         return;
@@ -129,19 +129,20 @@ public class RoomController {
 						ArrayList<Room> rooms = test.searchByType(size);
 													
 						// Prenta headers 
-						System.out.printf("%-35s","Hotel");
+						
 						System.out.printf("%-6s","ID"); System.out.printf("%-8s","Price");
-						System.out.printf("%-12s","Available"); System.out.printf("%-5s","Type");
-						System.out.println(); System.out.println("-".repeat(66));
+						// System.out.printf("%-12s","Available"); 
+						System.out.printf("%-9s","Type");System.out.printf("%-35s","Hotel");
+						System.out.println(); System.out.println("-".repeat(60));
 
 						// Prenta niðurstöður úr leitinni
 						for(int i = 0; i<rooms.size(); i++) {
-							System.out.printf("%-35s",rooms.get(i).getHotelName());
 						    System.out.printf("%-6s",rooms.get(i).getRoomID());
 						    //System.out.printf("%-6s",rooms.get(i).getHotelID());
 						    System.out.printf("%-8s",rooms.get(i).getPrice());
 							// System.out.printf("%-12s",rooms.get(i).getAvailable());
-							System.out.printf("%-5s",rooms.get(i).getType());
+							System.out.printf("%-9s",rooms.get(i).getType());
+							System.out.printf("%-35s",rooms.get(i).getHotelName());
 							System.out.println();
 						}
 							return;
